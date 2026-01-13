@@ -1,0 +1,124 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "id": "d0101d9c-7b83-49bf-b211-539c0c7d1208",
+   "metadata": {},
+   "outputs": [
+    {
+     "name": "stderr",
+     "output_type": "stream",
+     "text": [
+      "2026-01-13 11:49:52.521 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.523 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.525 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.528 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.529 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.531 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.532 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.533 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.535 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.537 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.538 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.540 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.542 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.544 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.545 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.547 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.553 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.555 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.557 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.559 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.561 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.563 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.565 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.567 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.569 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.570 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.572 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.573 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.574 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.576 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.585 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.592 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
+      "2026-01-13 11:49:52.595 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n"
+     ]
+    }
+   ],
+   "source": [
+    "import streamlit as st\n",
+    "import pandas as pd\n",
+    "\n",
+    "# App Title\n",
+    "st.title(\" My Instagram Travel Map\")\n",
+    "\n",
+    "# Initialize a simple \"database\" in the app's memory\n",
+    "if 'places' not in st.session_state:\n",
+    "    st.session_state.places = pd.DataFrame(columns=[\"Name\", \"Area\", \"Category\", \"Map Link\"])\n",
+    "\n",
+    "# --- SIDEBAR: ADD NEW PLACE ---\n",
+    "st.sidebar.header(\"Add New Discovery\")\n",
+    "name = st.sidebar.text_input(\"Restaurant/Hotel Name\")\n",
+    "area = st.sidebar.text_input(\"Area (e.g. Soho, Brooklyn, Dubai Marina)\")\n",
+    "category = st.sidebar.selectbox(\"Type\", [\"Restaurant\", \"Hotel\", \"Cafe\", \"Bar\"])\n",
+    "\n",
+    "if st.sidebar.button(\"Save to My List\"):\n",
+    "    # Generate a Google Maps search link automatically\n",
+    "    search_url = f\"https://www.google.com/maps/search/?api=1&query={name.replace(' ', '+')}+{area.replace(' ', '+')}\"\n",
+    "    \n",
+    "    new_data = pd.DataFrame([[name, area, category, search_url]], \n",
+    "                            columns=[\"Name\", \"Area\", \"Category\", \"Map Link\"])\n",
+    "    \n",
+    "    st.session_state.places = pd.concat([st.session_state.places, new_data], ignore_index=True)\n",
+    "    st.sidebar.success(f\"Saved {name}!\")\n",
+    "\n",
+    "# --- MAIN DISPLAY: SORTED BY AREA ---\n",
+    "st.header(\"My Saved Spots\")\n",
+    "\n",
+    "if st.session_state.places.empty:\n",
+    "    st.info(\"Your list is empty. Add something from the sidebar!\")\n",
+    "else:\n",
+    "    # Grouping by Area\n",
+    "    areas = st.session_state.places['Area'].unique()\n",
+    "    \n",
+    "    for a in areas:\n",
+    "        with st.expander(f\" {a.upper()}\"):\n",
+    "            area_df = st.session_state.places[st.session_state.places['Area'] == a]\n",
+    "            for index, row in area_df.iterrows():\n",
+    "                col1, col2 = st.columns([3, 1])\n",
+    "                col1.write(f\"**{row['Name']}** ({row['Category']})\")\n",
+    "                col2.link_button(\"Navigate \", row['Map Link'])"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "6b267fe4-d456-4079-8867-f6419e827533",
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}
